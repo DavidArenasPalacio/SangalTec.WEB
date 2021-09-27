@@ -1,0 +1,80 @@
+﻿@model IEnumerable<SangalTec.Bunsiness.Dtos.UsuarioDto>
+
+@section Styles{}
+
+<div class="content pt-5">
+    <div class="container-fluid">
+        <div class="table-responsive">
+            <div class="row  mb-5">
+                <div class="col-6">
+                    <h2 class="text-primary">@ViewBag.Titulo</h2>
+                </div>
+                <div class="col-6 text-right">
+
+                    <a onclick="mostrarModal('@Url.Action("Crear","Usuarios",null,Context.Request.Scheme)','Crear usuario')" class="btn btn-success"> Crear nuevo Usuario</a>
+                </div>
+            </div>
+            <table class="table table-striped text-center" id="tabla">
+                <thead >
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NumeroCelular)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Estado)
+                        </th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var usuarios in Model)
+                    {
+                    <tr>
+                        <td>
+                            @usuarios.Email
+                        </td>
+
+                        <td>
+                            @usuarios.NumeroCelular
+                        </td>
+
+                        <td>
+                            @if (usuarios.Estado.Equals("Activo"))
+                            {
+
+                                <span class="btn btn-primary">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="btn btn-danger">Deshabilitado</span>
+                            }
+
+                        </td>
+                        <td>
+                            <a class="btn btn-success" asp-action="Editar"><i title="Editar" class="fas fa-edit"></i></a>
+                            <a class="btn btn-primary" href="javascript:mostrarModal('@Url.Action("Detalle","Usuarios",new{id=usuarios.Id},Context.Request.Scheme)','Detalle del usuario')"><i class="fas fa-search"></i></a>
+                            <a class="btn btn-danger" asp-action="Editar"><i title="Eliminar" class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/site.js"></script>
+    <script src="~/js/tabla.js"></script>
+    <script>
+    @if(TempData["Accion"] != null && TempData["Accion"].ToString().Equals("Guardar"))
+            {
+                <text>
+        alertify.set('notifier', 'position', 'top-right');
+        alertify.success('@TempData["Mensaje"]');
+                </text>
+            }
+    </script>
+}
